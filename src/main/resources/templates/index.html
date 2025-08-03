@@ -4,18 +4,12 @@
     <title>Currency Converter</title>
 </head>
 <body>
-    <h2>Currency Converter</h2>
-    <form action="/convert" method="get">
-        <label>Amount:</label>
-        <input type="number" name="amount" step="0.01" required><br><br>
-
-        <label>From:</label>
-        <input type="text" name="from" value="USD" required><br><br>
-
-        <label>To:</label>
-        <input type="text" name="to" value="INR" required><br><br>
-
-        <button type="submit">Convert</button>
-    </form>
+<h1>Currency Converter</h1>
+<form action="/convert" method="post">
+    <label for="amount">Enter Amount:</label>
+    <input type="number" step="any" name="amount" required>
+    <button type="submit">Convert</button>
+</form>
+<p>Converted Amount: <strong th:text="${converted}">0.0</strong></p>
 </body>
 </html>
