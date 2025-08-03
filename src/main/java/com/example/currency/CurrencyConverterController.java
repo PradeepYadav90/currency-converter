@@ -1,21 +1,21 @@
+package com.example.currency;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class CurrencyConverterController {
 
     @GetMapping("/")
-    public String home() {
+    public String index() {
         return "index";
     }
 
-    @ResponseBody
-    @GetMapping("/convert")
-    public String convert(@RequestParam double amount,
-                          @RequestParam String from,
-                          @RequestParam String to) {
-        double rate = 80.0; // Dummy conversion rate
-        double result = amount * rate;
-        return amount + " " + from + " = " + result + " " + to;
+    @PostMapping("/convert")
+    public String convert(@RequestParam double amount, Model model) {
+        double converted = amount * 0.012; // Example rate
+        model.addAttribute("converted", converted);
+        return "index";
     }
 }
