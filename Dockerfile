@@ -1,15 +1,11 @@
-# Stage 1: Build with Maven using Java 17
-FROM maven:3.9.4-eclipse-temurin-17 AS build
+# Use Java 17 base image
+FROM eclipse-temurin:17-jdk-alpine
 
+# Set working directory
 WORKDIR /app
-COPY . .
-RUN mvn clean package -DskipTests
 
-# Stage 2: Run with minimal JDK
-FROM eclipse-temurin:17-jdk
+# Copy Maven build output (you must build the jar first)
+COPY target/currency-converter-1.0.jar app.jar
 
-WORKDIR /app
-COPY --from=build /app/target/currency-converter-1.0.jar app.jar
-
-EXPOSE 8080
+# Run the app
 ENTRYPOINT ["java", "-jar", "app.jar"]
