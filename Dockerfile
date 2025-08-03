@@ -1,14 +1,26 @@
-# Use Java 17 base image
-FROM eclipse-temurin:17-jdk
+# Stage 1: Build with Maven using Java 17
+FROM maven:3.9.4-eclipse-temurin-17 AS build
 
-# Create working directory
+# Set workdir
 WORKDIR /app
 
-# Copy the JAR file from Maven build
-COPY target/currency-converter-1.0.jar app.jar
+# Copy all project files
+COPY . .
 
-# Expose the Spring Boot port
+# Build the project
+RUN mvn clean package -DskipTests
+
+# Stage 2: Run the built app with JDK 17
+FROM eclipse-temurin:17-jdk
+
+# Set workdir
+WORKDIR /app
+
+# Copy the jar from build stage
+COPY --from=build /app/target/currency-converter-1.0.jar app.jar
+
+# Expose port
 EXPOSE 8080
 
-# Run the app
+# Start app
 ENTRYPOINT ["java", "-jar", "app.jar"]
